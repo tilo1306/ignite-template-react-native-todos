@@ -5,19 +5,34 @@ import { Header } from '../components/Header';
 import { Task, TasksList } from '../components/TasksList';
 import { TodoInput } from '../components/TodoInput';
 
+
 export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   function handleAddTask(newTaskTitle: string) {
-    //TODO - add new task
+
+    const newTask = {
+      id: Number(tasks.length + 1),
+      title: newTaskTitle,
+      done: false
+    } as Task
+
+    setTasks([...tasks, newTask])
   }
 
   function handleToggleTaskDone(id: number) {
-    //TODO - toggle task done if exists
+    const findTask = tasks.find(task => task.id === id) as Task
+    findTask.done = !findTask.done
+    const updateTask = tasks.map(task => ({ ...task }))
+    setTasks(updateTask)
+
   }
 
   function handleRemoveTask(id: number) {
-    //TODO - remove task from state
+    const findTask = tasks.filter(task => task.id !== id)
+
+    setTasks(findTask)
+
   }
 
   return (
@@ -26,10 +41,10 @@ export function Home() {
 
       <TodoInput addTask={handleAddTask} />
 
-      <TasksList 
-        tasks={tasks} 
+      <TasksList
+        tasks={tasks}
         toggleTaskDone={handleToggleTaskDone}
-        removeTask={handleRemoveTask} 
+        removeTask={handleRemoveTask}
       />
     </View>
   )
